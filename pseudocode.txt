@@ -1,0 +1,109 @@
+# Think about how you would set this problem up!
+# Build the game assuming the computer randomly selects the secret colors and 
+# the human player must guess them. Remember that you need to give the proper 
+# feedback on how good the guess was each turn!
+
+#note: decode_holes should have an arrow pointing next to it. Tell user it goes left to right
+
+create a class Mastermind
+  constant var red_peg "\u2022".colorize(:red)
+                blue, green, violet, yellow, orange
+  constant array of code pegs blue, green, red, violet, yellow, orange (try use bullet point)
+    alt:
+      constant hash of code pegs like so:
+        {
+          red_peg: "\u2022".colorize(:red),
+          blue_peg: "\u2022".colorize(:blue),
+          ...
+        }
+  constant array of key pegs black and white (try use asterisk)
+  constant array of 2D decode_holes like [["O", "O", "O", "O"], ["O", "O", "O", "O"]...] x12
+  constant array of key_holes like [["o", "o", "o", "o"], ["o", "o", "o", "o"]... ] x12
+
+  initialize an empty array secret_code
+    this is to be used for the computer selecting secret colors
+    then push the #sample numbers like so:
+      4.times do
+        secret_code.push(code_pegs.sample)
+        puts test
+      end
+
+  method start_game
+    "Welcome to Mastermind! The computer has already selected the secret colors. Try your best to guess!"
+    puts board
+    choose_peg
+  end
+
+  method choose_peg
+    show_peg_options
+    user_choice = gets.chomp
+    until valid_choice?(user_choice)
+      puts input_error_msg(user_input)
+      user_input = gets.chomp
+    end
+    insert_peg(user_input.to_i)
+  end
+
+  method insert_peg(user_input)
+    decode_holes[current_turn - 1][current_position] = code_pegs[choose_peg]
+    current_position += 1
+    confirm_choice
+  end
+
+  method confirm_choice
+    puts "Final answer? Enter 1 if yes or 0 if no."
+    user_choice = gets.chomp
+    until valid_confirmation?(user_choice)
+      puts input_error_msg(user_input)
+      user_input = gets.chomp
+    end
+
+    can try
+    if user_choice == 1 check_winner else undo
+  end
+
+  method code_guessed?
+    iterate over the decode_holes and check if secret_code matches
+    if matches then true else false
+  end
+
+  method check_winner
+    if current_turn == 12 && code_guessed == false
+      puts "Computer has won! Better luck next time."
+    elsif code_guessed? == true
+      puts "Congratulations player!"
+    else
+      choose_peg
+    end
+  end
+
+  method announce_winner
+
+
+  method undo
+    decode_holes[current_turn - 1][current_position] = "O"
+    current_position -= 1
+  end
+  
+  method next_turn
+    current_position = 0
+    current_turn += 1
+  end
+
+  method current_turn
+    1
+  end
+
+  method current_position
+    0
+  end
+
+  method show_peg_options
+    puts the peg array
+    puts 0,1,2,3,4,5 or 6 to undo
+  end
+
+  method give_feedback
+
+
+  
