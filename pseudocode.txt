@@ -7,7 +7,7 @@
 
 create a class Mastermind
   constant var red_peg "\u2022".colorize(:red)
-                blue, green, violet, yellow, orange
+                blue, green, violet, yellow, orange, black, white
   constant array of code pegs blue, green, red, violet, yellow, orange (try use bullet point)
     alt:
       constant hash of code pegs like so:
@@ -17,8 +17,7 @@ create a class Mastermind
           ...
         }
   constant array of key pegs black and white (try use asterisk)
-  constant array of 2D decode_holes like [["O", "O", "O", "O"], ["O", "O", "O", "O"]...] x12
-  constant array of key_holes like [["o", "o", "o", "o"], ["o", "o", "o", "o"]... ] x12
+  
 
   initialize an empty array secret_code
     this is to be used for the computer selecting secret colors
@@ -27,11 +26,27 @@ create a class Mastermind
         secret_code.push(code_pegs.sample)
         puts test
       end
+  
+  initialize array of 2D decode_holes like [["O", "O", "O", "O"], ["O", "O", "O", "O"]...] x12
+  initialize array of key_holes like [["o", "o", "o", "o"], ["o", "o", "o", "o"]... ] x12
+
+  initialize 
 
   method start_game
     "Welcome to Mastermind! The computer has already selected the secret colors. Try your best to guess!"
     puts board
+    4.times do
+      secret_code.push(code_pegs.sample)
+      puts test
+    end
     choose_peg
+  end
+
+  method show_board
+    12 times do n
+      print decode_holes[n]
+      puts key_holes[n]
+    end
   end
 
   method choose_peg
@@ -41,10 +56,10 @@ create a class Mastermind
       puts input_error_msg(user_input)
       user_input = gets.chomp
     end
-    insert_peg(user_input.to_i)
+    insert_code_peg(user_input.to_i)
   end
 
-  method insert_peg(user_input)
+  method insert_code_peg(user_input)
     decode_holes[current_turn - 1][current_position] = code_pegs[choose_peg]
     current_position += 1
     confirm_choice
@@ -62,6 +77,13 @@ create a class Mastermind
     if user_choice == 1 check_winner else undo
   end
 
+  method give_feedback
+    decode_holes[current_turn - 1] each with index |element, index| 
+      check if index element of the secret_code is the same as decode_holes
+        insert black in key_holes in current index
+      else check if index element of the secret_code exists in decode_holes
+        insert white in key_holes in current index
+
   method code_guessed?
     iterate over the decode_holes and check if secret_code matches
     if matches then true else false
@@ -73,6 +95,7 @@ create a class Mastermind
     elsif code_guessed? == true
       puts "Congratulations player!"
     else
+      give_feedback
       choose_peg
     end
   end
@@ -102,8 +125,12 @@ create a class Mastermind
     puts the peg array
     puts 0,1,2,3,4,5 or 6 to undo
   end
-
-  method give_feedback
-
+end
 
   
+
+create class Player that extends to Mastermind
+  initialize with parameters role
+    @role = role
+  end
+end
