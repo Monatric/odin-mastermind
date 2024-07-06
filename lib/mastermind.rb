@@ -17,10 +17,27 @@ class Mastermind
   WHITE_PEG = "⬤".colorize(:white)
   KEY_PEGS = [BLACK_PEG, WHITE_PEG].freeze
 
+  attr_accessor :decode_holes, :key_holes
+
+  def initialize
+    @secret_code = []
+    @decode_holes = []
+    @key_holes = []
+  end
+
+  def start_game
+    12.times do
+      decode_holes.push(%w[O O O O])
+      key_holes.push(%w[o o o o])
+    end
+  end
+
   def test
-    puts "Test"
+    p decode_holes
   end
 end
 
 test = Mastermind.new
+test.test
+test.start_game
 test.test
