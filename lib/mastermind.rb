@@ -39,7 +39,7 @@ class Mastermind
   end
 
   def show_board
-    puts "\n\tCode holes\t\t\tKey holes"
+    puts "\nCode holes\tKey holes"
     12.times do |n|
       print "#{decode_holes[n][0]} #{decode_holes[n][1]} #{decode_holes[n][2]} #{decode_holes[n][3]}\t\t"
       puts "#{key_holes[n][0]} #{key_holes[n][1]} #{key_holes[n][2]} #{key_holes[n][3]}\n"
@@ -91,8 +91,12 @@ class Mastermind
   end
 
   def show_peg_options
-    puts CODE_PEGS
-    puts "0,1,2,3,4,5 or 6 to undo"
+    puts "Below are the color options. Choose a number that aligns with the color."
+    puts "0  1  2  3  4  5 \t  6"
+    6.times do |n|
+      print "#{CODE_PEGS[n]}  "
+    end
+    puts "\tundo"
   end
 
   def test
