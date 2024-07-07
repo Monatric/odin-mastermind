@@ -36,10 +36,10 @@ class Mastermind
   end
 
   def show_board
-    puts ""
+    puts "\n\tCode holes\t\t\tKey holes"
     12.times do |n|
-      print "Code holes #{decode_holes[n]}\t\t"
-      print "Key holes #{key_holes[n]}\n"
+      print "#{decode_holes[n]}\t\t"
+      print "#{key_holes[n]}\n"
     end
   end
 
