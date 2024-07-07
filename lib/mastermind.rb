@@ -26,9 +26,20 @@ class Mastermind
   end
 
   def start_game
+    puts "Welcome to Mastermind! The computer has already selected the secret colors. Try your best to guess!"
     12.times do
       decode_holes.push(%w[O O O O])
       key_holes.push(%w[o o o o])
+    end
+    puts show_board
+    # choose_peg
+  end
+
+  def show_board
+    puts ""
+    12.times do |n|
+      print "Code holes #{decode_holes[n]}\t\t"
+      print "Key holes #{key_holes[n]}\n"
     end
   end
 
@@ -38,6 +49,4 @@ class Mastermind
 end
 
 test = Mastermind.new
-test.test
 test.start_game
-test.test
