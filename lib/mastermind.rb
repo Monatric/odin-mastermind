@@ -58,12 +58,13 @@ class Mastermind
   end
 
   def insert_code_peg(user_choice)
-    decode_holes[current_turn - 1][current_position] = CODE_PEGS[user_choice]
+    decode_holes[current_turn - 1][current_position] = CODE_PEGS[user_choice - 1]
     self.current_position += 1
-    confirm_choice if current_position == 3
+    confirm_choice if current_position == 4
   end
 
   def confirm_choice
+    show_board
     puts "Final answer? Enter 1 if yes or 0 if no."
     user_choice = gets.chomp
     until valid_confirmation?(user_choice)
