@@ -18,7 +18,7 @@ class Mastermind
   WHITE_PEG = "⬤".colorize(:white)
   KEY_PEGS = [BLACK_PEG, WHITE_PEG].freeze
 
-  attr_accessor :decode_holes, :key_holes, :current_position, :current_turn
+  attr_accessor :decode_holes, :key_holes, :current_position, :current_turn, :secret_code
 
   def initialize
     @secret_code = []
@@ -34,8 +34,16 @@ class Mastermind
       decode_holes.push(%w[O O O O])
       key_holes.push(%w[o o o o])
     end
+    create_secret_code
     show_board
     choose_peg while current_turn < 12
+  end
+
+  def create_secret_code
+    4.times do |n|
+      secret_code.push(CODE_PEGS.sample)
+    end
+    puts secret_code
   end
 
   def show_board
@@ -63,6 +71,41 @@ class Mastermind
     confirm_choice if current_position == 4
   end
 
+  def code_guessed?
+    true if decode_holes[current_turn - 1] == secret_code[current_turn - 1]
+  end
+
+  def check_winner
+    if current_turn == 12 && code_guessed? == false
+      puts "Computer has won! Better luck next time."
+    elsif code_guessed? == true
+      puts "Congratulations player!"
+    else
+      give_feedback
+      choose_peg
+    end
+  end
+
+  def give_feedback
+    #binding.pry
+    decode_holes[current_turn - 1].each_with_index do |decode_element, index|
+      # index element of the secret_code is the same as decode_holes
+      if secret_code[index] == decode_element
+        key_holes[current_turn - 1].unshift(KEY_PEGS[0])
+        key_holes[current_turn - 1].pop
+      end
+      # insert black in key_holes in current index
+
+      # elsif index element of the secret_code exists in decode_holes
+      #   insert white in key_holes in current index
+      # end
+    end
+    puts "test #{key_holes[current_turn - 1][0]} #{key_holes[current_turn - 1][1]} #{key_holes[current_turn - 1][2]} #{key_holes[current_turn - 1][3]}"
+    show_board
+
+    self.current_turn += 1
+  end
+
   def confirm_choice
     show_board
     puts "Final answer? Enter 1 if yes or 0 if no."
@@ -72,16 +115,20 @@ class Mastermind
       user_choice = gets.chomp
     end
 
-    # if user_choice == 1 check_winner else undo
+    check_winner if user_choice.to_i == 1
   end
 
-  def current_turn
-    1
-  end
+  # def current_turn
+  #   1
+  # end
 
   # def current_position(increment)
   #   0 + increment
   # end
+
+  def valid_confirmation?(valid_confirmation)
+    valid_confirmation.match?(/[0-1]/)
+  end
 
   def valid_choice?(user_choice)
     user_choice.match?(/[0-5]/)
