@@ -66,7 +66,7 @@ class Mastermind
   end
 
   def insert_code_peg(user_choice)
-    decode_holes[current_turn][current_position] = CODE_PEGS[user_choice - 1]
+    decode_holes[current_turn][current_position] = CODE_PEGS[user_choice]
     self.current_position += 1
     confirm_choice if current_position == 4
   end
