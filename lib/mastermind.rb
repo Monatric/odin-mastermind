@@ -10,8 +10,8 @@ class Mastermind
   GREEN_PEG = "⬤".colorize(:green)
   MAGENTA_PEG = "⬤".colorize(:magenta)
   YELLOW_PEG = "⬤".colorize(:yellow)
-  CYAN_PEG = "⬤".colorize(:cyan)
-  CODE_PEGS = [RED_PEG, BLUE_PEG, GREEN_PEG, MAGENTA_PEG, YELLOW_PEG, CYAN_PEG].freeze
+  LIGHT_CYAN_PEG = "⬤".colorize(:light_cyan)
+  CODE_PEGS = [RED_PEG, BLUE_PEG, GREEN_PEG, MAGENTA_PEG, YELLOW_PEG, LIGHT_CYAN_PEG].freeze
 
   # Key pegs
   BLACK_PEG = "⬤".colorize(:black)
