@@ -150,7 +150,7 @@ class Mastermind
     puts "Final answer? Enter 1 if yes or 0 if no."
     user_choice = gets.chomp
     until valid_confirmation?(user_choice)
-      puts input_error_msg(user_input)
+      puts input_error_msg
       user_choice = gets.chomp
     end
     self.current_position = 0
@@ -165,8 +165,8 @@ class Mastermind
   #   0 + increment
   # end
 
-  def valid_confirmation?(valid_confirmation)
-    valid_confirmation.match?(/[0-1]/)
+  def valid_confirmation?(user_choice)
+    user_choice.match?(/[0-1]/)
   end
 
   def valid_choice?(user_choice)
