@@ -146,7 +146,7 @@ class Mastermind
       puts input_error_msg(user_input)
       user_choice = gets.chomp
     end
-
+    self.current_position = 0
     check_winner if user_choice.to_i == 1
   end
 
