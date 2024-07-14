@@ -18,7 +18,7 @@ class Mastermind
   WHITE_PEG = "⬤".colorize(:white)
   KEY_PEGS = [BLACK_PEG, WHITE_PEG].freeze
 
-  attr_accessor :decode_holes, :key_holes, :current_position, :current_turn, :secret_code
+  attr_accessor :decode_holes, :key_holes, :current_position, :current_turn, :secret_code, :game_finished
 
   def initialize
     @secret_code = []
@@ -26,6 +26,7 @@ class Mastermind
     @key_holes = []
     @current_turn = 0
     @current_position = 0
+    @game_finished = false
   end
 
   def start_game
@@ -38,7 +39,7 @@ class Mastermind
     show_board
     while current_turn < 12
       choose_peg
-      break if code_guessed?
+      break if game_finished
     end
   end
 
@@ -80,12 +81,12 @@ class Mastermind
 
   def check_winner
     # binding.pry
-    if current_turn == 12 && code_guessed? == false
+    if current_turn == 11 && code_guessed? == false
       puts "Computer has won! Better luck next time."
-      "finished"
+      self.game_finished = true
     elsif code_guessed? == true
       puts "Congratulations player!"
-      "finished"
+      self.game_finished = true
     else
       give_feedback
       choose_peg
