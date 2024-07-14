@@ -24,7 +24,7 @@ class Mastermind
     @secret_code = []
     @decode_holes = []
     @key_holes = []
-    @current_turn = 1
+    @current_turn = 0
     @current_position = 0
   end
 
@@ -66,13 +66,13 @@ class Mastermind
   end
 
   def insert_code_peg(user_choice)
-    decode_holes[current_turn - 1][current_position] = CODE_PEGS[user_choice - 1]
+    decode_holes[current_turn][current_position] = CODE_PEGS[user_choice - 1]
     self.current_position += 1
     confirm_choice if current_position == 4
   end
 
   def code_guessed?
-    true if decode_holes[current_turn - 1] == secret_code[current_turn - 1]
+    true if decode_holes[current_turn] == secret_code[current_turn]
   end
 
   def check_winner
@@ -87,23 +87,55 @@ class Mastermind
   end
 
   def give_feedback
-    #binding.pry
-    decode_holes[current_turn - 1].each_with_index do |decode_element, index|
-      # index element of the secret_code is the same as decode_holes
-      if secret_code[index] == decode_element
-        key_holes[current_turn - 1].unshift(KEY_PEGS[0])
-        key_holes[current_turn - 1].pop
-      end
-      # insert black in key_holes in current index
-
-      # elsif index element of the secret_code exists in decode_holes
-      #   insert white in key_holes in current index
-      # end
-    end
-    puts "test #{key_holes[current_turn - 1][0]} #{key_holes[current_turn - 1][1]} #{key_holes[current_turn - 1][2]} #{key_holes[current_turn - 1][3]}"
+    # binding.pry
+    give_black_feedback
+    give_white_feedback
+    puts "test #{key_holes[current_turn][0]} #{key_holes[current_turn][1]} #{key_holes[current_turn - 1][2]} #{key_holes[current_turn - 1][3]}"
     show_board
 
     self.current_turn += 1
+  end
+
+  def give_black_feedback
+    decode_holes[current_turn].each_with_index do |decode_element, index|
+      # index element of the secret_code is the same as decode_holes
+      if secret_code[index] == decode_element
+        key_holes[current_turn].unshift(KEY_PEGS[0])
+        key_holes[current_turn].pop
+      end
+    end
+  end
+
+  def give_white_feedback
+    tallied_secret_code = secret_code.tally
+    tallied_decode_holes = decode_holes[current_turn].tally
+    temp_decode_holes = {}
+    puts tallied_secret_code
+    puts tallied_decode_holes
+    decode_holes[current_turn].each_with_index do |decode_element, index|
+      if temp_decode_holes.key?(decode_element)
+        temp_decode_holes[decode_element] += 1
+      else
+        temp_decode_holes[decode_element] = 1
+      end
+
+      # index element of the secret_code is the same as decode_holes
+      if secret_code[index] == decode_element
+        # binding.pry
+        next
+      elsif decode_holes[current_turn].any?(secret_code[index])
+        next if tallied_secret_code.key?(decode_element) == false
+
+        # change the logic to hash of decode holes where
+        # inserts a white if the value of the key of secret is greater than decode
+        # add +1 to that key of decode holes
+        next if tallied_secret_code[decode_element] < temp_decode_holes[decode_element]
+
+        key_holes[current_turn].unshift(KEY_PEGS[1])
+        key_holes[current_turn].pop
+
+      end
+    end
   end
 
   def confirm_choice
