@@ -36,7 +36,10 @@ class Mastermind
     end
     create_secret_code
     show_board
-    choose_peg while current_turn < 12
+    while current_turn < 12
+      choose_peg
+      break if code_guessed?
+    end
   end
 
   def create_secret_code
@@ -62,24 +65,27 @@ class Mastermind
       user_choice = gets.chomp
     end
     insert_code_peg(user_choice.to_i)
-    show_board
   end
 
   def insert_code_peg(user_choice)
     decode_holes[current_turn][current_position] = CODE_PEGS[user_choice]
     self.current_position += 1
+    show_board
     confirm_choice if current_position == 4
   end
 
   def code_guessed?
-    true if decode_holes[current_turn] == secret_code[current_turn]
+    decode_holes[current_turn] == secret_code
   end
 
   def check_winner
+    # binding.pry
     if current_turn == 12 && code_guessed? == false
       puts "Computer has won! Better luck next time."
+      "finished"
     elsif code_guessed? == true
       puts "Congratulations player!"
+      "finished"
     else
       give_feedback
       choose_peg
@@ -187,4 +193,3 @@ end
 
 test = Mastermind.new
 test.start_game
-test.show_board
