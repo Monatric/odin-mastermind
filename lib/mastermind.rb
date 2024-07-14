@@ -136,6 +136,7 @@ class Mastermind
 
       end
     end
+    temp_decode_holes = {}
   end
 
   def confirm_choice
