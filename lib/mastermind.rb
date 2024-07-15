@@ -44,10 +44,9 @@ class Mastermind
   end
 
   def create_secret_code
-    4.times do |n|
+    4.times do
       secret_code.push(CODE_PEGS.sample)
     end
-    puts secret_code
   end
 
   def show_board
@@ -158,14 +157,6 @@ class Mastermind
     check_winner if user_choice.to_i == 1
   end
 
-  # def current_turn
-  #   1
-  # end
-
-  # def current_position(increment)
-  #   0 + increment
-  # end
-
   def valid_confirmation?(user_choice)
     user_choice.match?(/[0-1]/)
   end
@@ -194,3 +185,5 @@ end
 
 test = Mastermind.new
 test.start_game
+# clean the code before proceeding to step 3
+# think of how we can make another class and module to separate the code
