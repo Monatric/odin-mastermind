@@ -134,3 +134,92 @@ create class Player that extends to Mastermind
     @role = role
   end
 end
+
+
+
+1. check if it exists
+2. another same color in guess that exists in secret but excess is blank
+
+use tally to count them all
+secret code: red blue green purple
+guess: red blue purple blue
+
+secret.tally
+red = 1
+blue = 1
+green = 1
+purple = 1
+
+guess.tally
+red = 1
+blue = 2
+purple = 1
+
+try separating it
+first iteration is checking for matches of same color and index, then black
+
+second iteration is checking for matches of same color and index, but if theres black, then skip, else check if it exits, then put white
+
+if guess_blue is 
+
+----
+try making temp code array
+secret: red blue green green
+guess: red green green red
+temp sec: red blue green green
+temp guess: red green green blue
+  would be:
+    ts: blue green green
+    tg: green green blue
+    key: black
+
+    ts: blue green
+    tg: green blue
+    key: black black
+
+    ts:
+    tg:
+    key: black black white white
+
+secret: red blue green red
+guess: red red red blue
+  would be:
+    ts: blue green red
+    tg: red red blue
+    key: black
+
+    ts: blue green
+    tg: red blue
+    key: black white
+
+    ts: green
+    tg: red
+    key: black white  white
+idea is make a temporary secret code and temporary guess code
+insert black when the element of the index matches each other, then remove from both temps
+from both temps, insert white if at least one element of the index in temp_guess matches temp_Secret, then remove
+
+
+
+
+s: red blue green red
+g: red red green blue
+
+counter: 
+  red 1
+  green 1
+  
+  make a secret_code_counter
+    red 2
+    blue 1
+    green 1
+
+  make a correct_guess_counter
+    add +1 to key if correct in black
+    then do the same for white
+    if current element does not exist in secret code counter then next
+    if correct_guess_counter key is greater than secret_code_counter key then next
+    
+
+
+  
