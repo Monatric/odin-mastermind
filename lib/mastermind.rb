@@ -1,9 +1,11 @@
 require "colorize"
+require_relative "display"
 require "pry-byebug"
 # ⚫ for key pegs
 
 # mastermind
 class Mastermind
+  include Display
   RED_PEG = "⬤".colorize(:red)
   BLUE_PEG = "⬤".colorize(:blue)
   GREEN_PEG = "⬤".colorize(:green)
@@ -61,7 +63,7 @@ class Mastermind
   end
 
   def choose_peg
-    show_peg_options
+    display_peg_options(CODE_PEGS)
     user_choice = gets.chomp
     until valid_choice?(user_choice)
       puts input_error_msg
