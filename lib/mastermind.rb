@@ -4,7 +4,6 @@ require "pry-byebug"
 
 # mastermind
 class Mastermind
-  # Code pegs
   RED_PEG = "⬤".colorize(:red)
   BLUE_PEG = "⬤".colorize(:blue)
   GREEN_PEG = "⬤".colorize(:green)
@@ -13,7 +12,6 @@ class Mastermind
   LIGHT_CYAN_PEG = "⬤".colorize(:light_cyan)
   CODE_PEGS = [RED_PEG, BLUE_PEG, GREEN_PEG, MAGENTA_PEG, YELLOW_PEG, LIGHT_CYAN_PEG].freeze
 
-  # Key pegs
   BLACK_PEG = "⬤".colorize(:black)
   WHITE_PEG = "⬤".colorize(:white)
   KEY_PEGS = [BLACK_PEG, WHITE_PEG].freeze
