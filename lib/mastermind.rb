@@ -136,6 +136,8 @@ class Mastermind
       # else
       #   temp_decode_holes[decode_element] = 1
       # end
+      next if secret_code_counter.key?(decode_element) == false
+
       if correct_guess_counter.key?(decode_element)
         correct_guess_counter[decode_element] += 1
       else
@@ -145,8 +147,6 @@ class Mastermind
       # next if secret_code[index] == decode_element
       # binding.pry
 
-      next if secret_code_counter.key?(decode_element) == false
-
       # change the logic to hash of decode holes where
       # inserts a white if the value of the key of secret is greater than decode
       # add +1 to that key of decode holes
@@ -155,7 +155,7 @@ class Mastermind
       key_holes[current_turn].unshift(KEY_PEGS[1])
       key_holes[current_turn].pop
     end
-    # temp_decode_holes = {}
+    self.correct_guess_counter = {}
   end
 
   def confirm_choice
