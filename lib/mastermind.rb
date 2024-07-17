@@ -52,7 +52,6 @@ class Mastermind
     4.times do
       secret_code.push(CODE_PEGS.sample)
     end
-    puts secret_code
   end
 
   def show_board
@@ -139,7 +138,6 @@ class Mastermind
   end
 
   def confirm_choice
-    show_board
     puts "Final answer? Enter 1 if yes or 0 if no."
     user_choice = gets.chomp
     until valid_confirmation?(user_choice)
