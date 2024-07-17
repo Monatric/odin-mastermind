@@ -31,11 +31,7 @@ class Mastermind
 
   def start_game
     puts "Welcome to Mastermind! The computer has already selected the secret colors. Try your best to guess!"
-    12.times do
-      decode_holes.push(%w[O O O O])
-      key_holes.push(%w[o o o o])
-    end
-    create_secret_code
+    set_up_board
     display_board(decode_holes, key_holes)
     while current_turn < 12
       choose_peg
@@ -48,9 +44,13 @@ class Mastermind
   attr_accessor :decode_holes, :key_holes, :current_position, :current_turn, :secret_code, :game_finished,
                 :secret_code_counter, :correct_guess_counter
 
-  def create_secret_code
+  def set_up_board
     4.times do
       secret_code.push(CODE_PEGS.sample)
+    end
+    12.times do
+      decode_holes.push(%w[O O O O])
+      key_holes.push(%w[o o o o])
     end
     puts secret_code
   end
