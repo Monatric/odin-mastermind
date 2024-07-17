@@ -106,36 +106,35 @@ class Mastermind
     self.current_turn += 1
   end
 
+  def count_keys(decode_element)
+    if correct_guess_counter.key?(decode_element)
+      correct_guess_counter[decode_element] += 1
+    else
+      correct_guess_counter[decode_element] = 1
+    end
+  end
+
   def give_black_feedback
     decode_holes[current_turn].each_with_index do |decode_element, index|
       # index element of the secret_code is the same as decode_holes
       next unless secret_code[index] == decode_element
 
-      key_holes[current_turn].unshift(KEY_PEGS[0])
-      key_holes[current_turn].pop
-      if correct_guess_counter.key?(decode_element)
-        correct_guess_counter[decode_element] += 1
-      else
-        correct_guess_counter[decode_element] = 1
-      end
+      key_holes[current_turn].unshift(KEY_PEGS[0]).pop
+      count_keys(decode_element)
     end
   end
 
   def give_white_feedback
-    decode_holes[current_turn].each_with_index do |decode_element, index|
+    decode_holes[current_turn].each do |decode_element|
       next if secret_code_counter.key?(decode_element) == false
 
-      if correct_guess_counter.key?(decode_element)
-        correct_guess_counter[decode_element] += 1
-      else
-        correct_guess_counter[decode_element] = 1
-      end
+      count_keys(decode_element)
 
       next if secret_code_counter[decode_element] < correct_guess_counter[decode_element]
 
-      key_holes[current_turn].unshift(KEY_PEGS[1])
-      key_holes[current_turn].pop
+      key_holes[current_turn].unshift(KEY_PEGS[1]).pop
     end
+    # reset the counter every turn
     self.correct_guess_counter = {}
   end
 
