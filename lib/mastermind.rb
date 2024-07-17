@@ -18,9 +18,6 @@ class Mastermind
   WHITE_PEG = "⬤".colorize(:white)
   KEY_PEGS = [BLACK_PEG, WHITE_PEG].freeze
 
-  attr_accessor :decode_holes, :key_holes, :current_position, :current_turn, :secret_code, :game_finished,
-                :secret_code_counter, :correct_guess_counter
-
   def initialize
     @secret_code = []
     @decode_holes = []
@@ -45,6 +42,11 @@ class Mastermind
       break if game_finished
     end
   end
+
+  private
+
+  attr_accessor :decode_holes, :key_holes, :current_position, :current_turn, :secret_code, :game_finished,
+                :secret_code_counter, :correct_guess_counter
 
   def create_secret_code
     4.times do
