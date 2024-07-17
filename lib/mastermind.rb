@@ -83,7 +83,6 @@ class Mastermind
   end
 
   def check_winner
-    # binding.pry
     if current_turn == 11 && code_guessed? == false
       puts "Computer has won! Better luck next time."
       self.game_finished = true
@@ -97,12 +96,9 @@ class Mastermind
   end
 
   def give_feedback
-    # binding.pry
     self.secret_code_counter = secret_code.tally
-    puts "code counter #{secret_code_counter}"
     give_black_feedback
     give_white_feedback
-    puts "test #{key_holes[current_turn][0]} #{key_holes[current_turn][1]} #{key_holes[current_turn - 1][2]} #{key_holes[current_turn - 1][3]}"
     show_board
 
     self.current_turn += 1
@@ -121,21 +117,10 @@ class Mastermind
         correct_guess_counter[decode_element] = 1
       end
     end
-    puts "gess counter #{correct_guess_counter}"
   end
 
   def give_white_feedback
-    # tallied_secret_code = secret_code.tally
-    # tallied_decode_holes = decode_holes[current_turn].tally
-    # temp_decode_holes = {}
-    # puts tallied_secret_code
-    # puts tallied_decode_holes
     decode_holes[current_turn].each_with_index do |decode_element, index|
-      # if temp_decode_holes.key?(decode_element)
-      #   temp_decode_holes[decode_element] += 1
-      # else
-      #   temp_decode_holes[decode_element] = 1
-      # end
       next if secret_code_counter.key?(decode_element) == false
 
       if correct_guess_counter.key?(decode_element)
@@ -143,13 +128,7 @@ class Mastermind
       else
         correct_guess_counter[decode_element] = 1
       end
-      # index element of the secret_code is the same as decode_holes
-      # next if secret_code[index] == decode_element
-      # binding.pry
 
-      # change the logic to hash of decode holes where
-      # inserts a white if the value of the key of secret is greater than decode
-      # add +1 to that key of decode holes
       next if secret_code_counter[decode_element] < correct_guess_counter[decode_element]
 
       key_holes[current_turn].unshift(KEY_PEGS[1])
