@@ -36,7 +36,7 @@ class Mastermind
       key_holes.push(%w[o o o o])
     end
     create_secret_code
-    show_board
+    display_board(decode_holes, key_holes)
     while current_turn < 12
       choose_peg
       break if game_finished
@@ -54,19 +54,11 @@ class Mastermind
     end
   end
 
-  def show_board
-    puts "\nCode holes\tKey holes"
-    12.times do |n|
-      print "#{decode_holes[n][0]} #{decode_holes[n][1]} #{decode_holes[n][2]} #{decode_holes[n][3]}\t\t"
-      puts "#{key_holes[n][0]} #{key_holes[n][1]} #{key_holes[n][2]} #{key_holes[n][3]}\n"
-    end
-  end
-
   def choose_peg
     display_peg_options(CODE_PEGS)
     user_choice = gets.chomp
     until valid_choice?(user_choice)
-      puts input_error_msg
+      display_input_error_msg
       user_choice = gets.chomp
     end
     insert_code_peg(user_choice.to_i)
@@ -75,7 +67,7 @@ class Mastermind
   def insert_code_peg(user_choice)
     decode_holes[current_turn][current_position] = CODE_PEGS[user_choice]
     self.current_position += 1
-    show_board
+    display_board(decode_holes, key_holes)
     confirm_choice if current_position == 4
   end
 
@@ -100,7 +92,7 @@ class Mastermind
     self.secret_code_counter = secret_code.tally
     give_black_feedback
     give_white_feedback
-    show_board
+    display_board(decode_holes, key_holes)
 
     self.current_turn += 1
   end
@@ -141,7 +133,7 @@ class Mastermind
     puts "Final answer? Enter 1 if yes or 0 if no."
     user_choice = gets.chomp
     until valid_confirmation?(user_choice)
-      puts input_error_msg
+      display_input_error_msg
       user_choice = gets.chomp
     end
     self.current_position = 0
