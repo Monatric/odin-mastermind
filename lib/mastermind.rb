@@ -52,6 +52,7 @@ class Mastermind
     4.times do
       secret_code.push(CODE_PEGS.sample)
     end
+    puts secret_code
   end
 
   def choose_peg
