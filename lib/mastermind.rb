@@ -170,13 +170,7 @@ class Mastermind
     end
     puts "\tundo"
   end
-
-  def test
-    p decode_holes
-  end
 end
 
-test = Mastermind.new
-test.start_game
 # clean the code before proceeding to step 3
 # think of how we can make another class and module to separate the code

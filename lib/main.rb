@@ -1,4 +1,4 @@
 require_relative "mastermind"
 
-# test = Mastermind.new
-# test.test
+game = Mastermind.new
+game.start_game
