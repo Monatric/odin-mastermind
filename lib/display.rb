@@ -8,4 +8,8 @@ module Display
     end
     puts "\tundo"
   end
+
+  def input_error_msg
+    puts "That's not a number between the options!"
+  end
 end

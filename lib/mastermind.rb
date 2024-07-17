@@ -155,19 +155,6 @@ class Mastermind
   def valid_choice?(user_choice)
     user_choice.match?(/[0-5]/)
   end
-
-  def input_error_msg
-    puts "That's not a number between 0 to 5!"
-  end
-
-  def show_peg_options
-    puts "Below are the color options. Choose a number that aligns with the color."
-    puts "0  1  2  3  4  5 \t  6"
-    6.times do |n|
-      print "#{CODE_PEGS[n]}  "
-    end
-    puts "\tundo"
-  end
 end
 
 # clean the code before proceeding to step 3
