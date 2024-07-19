@@ -222,4 +222,18 @@ counter:
     
 
 
+**STEPS 3 and above**
+refactoring:
+  add a class called board
+    we can include there the pegs
+    board set up
   
+  add a class called Player
+    methods for choosing the secret color
+    methods for choosing the decode colors and feedbacks
+
+  add a class called HumanPlayer
+    methods for choosing a role
+
+  add a class called Computer
+    methods for guessing the code
