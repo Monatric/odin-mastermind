@@ -116,13 +116,17 @@ class Mastermind
     end
   end
 
+  def guess_greater_than_secret?
+    secret_code_counter[decode_element] < correct_guess_counter[decode_element]
+  end
+
   def give_white_feedback
     decode_holes[current_turn].each do |decode_element|
       next if secret_code_counter.key?(decode_element) == false
 
       count_keys(decode_element)
 
-      next if secret_code_counter[decode_element] < correct_guess_counter[decode_element]
+      next if guess_greater_than_secret?
 
       key_holes[current_turn].unshift(KEY_PEGS[1]).pop
     end
