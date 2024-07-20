@@ -51,17 +51,38 @@ class Mastermind
                 :secret_code_counter, :correct_guess_counter, :board, :players
 
   def select_player_role(player_role)
-    if player_role == 1
-      board.generate_secret_code
-      while current_turn < 12
-        user_choice = players.choose_peg
-        insert_code_peg(user_choice)
-        break if game_finished
-      end
-    elsif player_role == 2
-      players.select_secret_code
-      puts board.secret_code
+    return unless player_role == 1
+
+    board.generate_secret_code
+    while current_turn < 12
+      user_choice = players.choose_peg
+      insert_code_peg(user_choice)
+      break if game_finished
     end
+    # elsif player_role == 2
+    #   4.times do
+    #     user_choice = players.choose_peg
+    #     insert_secret_peg(user_choice)
+    #   end
+    #   while current_turn < 12
+    #     user_choice1 = players.choose_peg
+    #     insert_code_peg(user_choice1)
+    #     break if game_finished
+    #   end
+  end
+
+  def insert_secret_peg(user_choice)
+    board.secret_code[current_position] = Board::CODE_PEGS[user_choice]
+    self.current_position += 1
+    puts board.secret_code
+    return unless current_position == 4
+
+    self.current_position = 0
+    puts "The secret code is"
+    4.times do |n|
+      print "#{board.secret_code[n]} "
+    end
+    print "\n"
   end
 
   def insert_code_peg(user_choice)
@@ -80,6 +101,7 @@ class Mastermind
     give_black_feedback
     give_white_feedback
     display_board(board.decode_holes, board.key_holes)
+    puts secret_code_counter
 
     self.current_turn += 1
   end
@@ -103,13 +125,18 @@ class Mastermind
   end
 
   def guess_greater_than_secret?(decode_element)
+    # puts "num of sec: #{secret_code_counter[decode_element]}"
+    # puts "num of dec: #{correct_guess_counter[decode_element]}"
+
     secret_code_counter[decode_element] < correct_guess_counter[decode_element]
   end
 
   def give_white_feedback
-    # binding.pry
-    board.decode_holes[current_turn].each do |decode_element|
+    board.decode_holes[current_turn].each_with_index do |decode_element, index|
+      # binding.pry
       next if secret_code_counter.key?(decode_element) == false
+
+      next if board.secret_code[index] == decode_element
 
       count_keys(decode_element)
 
@@ -118,6 +145,7 @@ class Mastermind
       board.key_holes[current_turn].unshift(Board::KEY_PEGS[1]).pop
     end
     # reset the counter every turn
+    # puts correct_guess_counter
     self.correct_guess_counter = {}
   end
 end

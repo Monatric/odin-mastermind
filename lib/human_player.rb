@@ -17,19 +17,19 @@ class HumanPlayer
     user_choice.to_i
   end
 
-  def select_secret_code
-    board.secret_code[current_turn][current_position] = Board::CODE_PEGS[user_choice]
-    self.current_position += 1
-    # display_board(board.decode_holes, board.key_holes)
-    confirm_choice if current_position == 4
-  end
+  # def select_secret_code
+  #   @game.board.secret_code[current_turn][current_position] = Board::CODE_PEGS[user_choice]
+  #   self.current_position += 1
+  #   # display_board(board.decode_holes, board.key_holes)
+  #   confirm_choice if current_position == 4
+  # end
 
-  def insert_code_peg(user_choice)
-    board.decode_holes[current_turn][current_position] = Board::CODE_PEGS[user_choice]
-    self.current_position += 1
-    display_board(board.decode_holes, board.key_holes)
-    confirm_choice if current_position == 4
-  end
+  # def insert_code_peg(user_choice)
+  #   board.decode_holes[current_turn][current_position] = Board::CODE_PEGS[user_choice]
+  #   self.current_position += 1
+  #   display_board(board.decode_holes, board.key_holes)
+  #   confirm_choice if current_position == 4
+  # end
 
   def confirm_choice
     puts "Final answer? Enter 1 if yes or 0 if no."
