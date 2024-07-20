@@ -1,4 +1,4 @@
 require_relative "mastermind"
+require_relative "human_player"
 
-game = Mastermind.new
-game.start_game
+Mastermind.new(HumanPlayer).start_game

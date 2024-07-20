@@ -8,7 +8,8 @@ require_relative "board"
 class Mastermind
   include Display
 
-  def initialize
+  def initialize(player_1_class)
+    @players = player_1_class.new(self)
     @board = Board.new
     @secret_code_counter = {}
     @correct_guess_counter = {}
@@ -23,36 +24,13 @@ class Mastermind
     board.generate_secret_code
     display_board(board.decode_holes, board.key_holes)
     while current_turn < 12
-      choose_peg
+      user_choice = players.choose_peg
+      insert_code_peg(user_choice)
       break if game_finished
     end
   end
 
-  private
-
-  attr_accessor :current_position, :current_turn, :game_finished,
-                :secret_code_counter, :correct_guess_counter, :board
-
-  def choose_peg
-    display_peg_options(Board::CODE_PEGS)
-    user_choice = gets.chomp
-    until valid_choice?(user_choice)
-      display_input_error_msg
-      user_choice = gets.chomp
-    end
-    insert_code_peg(user_choice.to_i)
-  end
-
-  def insert_code_peg(user_choice)
-    board.decode_holes[current_turn][current_position] = Board::CODE_PEGS[user_choice]
-    self.current_position += 1
-    display_board(board.decode_holes, board.key_holes)
-    confirm_choice if current_position == 4
-  end
-
-  def code_guessed?
-    board.decode_holes[current_turn] == board.secret_code
-  end
+  attr_accessor :current_position
 
   def check_winner
     if current_turn == 11 && code_guessed? == false
@@ -63,8 +41,34 @@ class Mastermind
       self.game_finished = true
     else
       give_feedback
-      choose_peg
+      # players.choose_peg
     end
+  end
+
+  private
+
+  attr_accessor :current_turn, :game_finished,
+                :secret_code_counter, :correct_guess_counter, :board, :players
+
+  # def choose_peg
+  #   display_peg_options(Board::CODE_PEGS)
+  #   user_choice = gets.chomp
+  #   until valid_choice?(user_choice)
+  #     display_input_error_msg
+  #     user_choice = gets.chomp
+  #   end
+  #   insert_code_peg(user_choice.to_i)
+  # end
+
+  def insert_code_peg(user_choice)
+    board.decode_holes[current_turn][current_position] = Board::CODE_PEGS[user_choice]
+    self.current_position += 1
+    display_board(board.decode_holes, board.key_holes)
+    players.confirm_choice if current_position == 4
+  end
+
+  def code_guessed?
+    board.decode_holes[current_turn] == board.secret_code
   end
 
   def give_feedback
@@ -111,24 +115,5 @@ class Mastermind
     end
     # reset the counter every turn
     self.correct_guess_counter = {}
-  end
-
-  def confirm_choice
-    puts "Final answer? Enter 1 if yes or 0 if no."
-    user_choice = gets.chomp
-    until valid_confirmation?(user_choice)
-      display_input_error_msg
-      user_choice = gets.chomp
-    end
-    self.current_position = 0
-    check_winner if user_choice.to_i == 1
-  end
-
-  def valid_confirmation?(user_choice)
-    user_choice.match?(/[0-1]/)
-  end
-
-  def valid_choice?(user_choice)
-    user_choice.match?(/[0-5]/)
   end
 end
