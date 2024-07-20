@@ -18,16 +18,16 @@ class Mastermind
     @game_finished = false
   end
 
-  def start_game
-    puts "Welcome to Mastermind! The computer has already selected the secret colors. Try your best to guess!"
+  def start_game(player_role)
+    # puts "Welcome to Mastermind! The computer has already selected the secret colors. Try your best to guess!"
     board.set_up_board
-    board.generate_secret_code
+    select_player_role(player_role)
     display_board(board.decode_holes, board.key_holes)
-    while current_turn < 12
-      user_choice = players.choose_peg
-      insert_code_peg(user_choice)
-      break if game_finished
-    end
+    # while current_turn < 12
+    #   user_choice = players.choose_peg
+    #   insert_code_peg(user_choice)
+    #   break if game_finished
+    # end
   end
 
   attr_accessor :current_position
@@ -50,15 +50,19 @@ class Mastermind
   attr_accessor :current_turn, :game_finished,
                 :secret_code_counter, :correct_guess_counter, :board, :players
 
-  # def choose_peg
-  #   display_peg_options(Board::CODE_PEGS)
-  #   user_choice = gets.chomp
-  #   until valid_choice?(user_choice)
-  #     display_input_error_msg
-  #     user_choice = gets.chomp
-  #   end
-  #   insert_code_peg(user_choice.to_i)
-  # end
+  def select_player_role(player_role)
+    if player_role == 1
+      board.generate_secret_code
+      while current_turn < 12
+        user_choice = players.choose_peg
+        insert_code_peg(user_choice)
+        break if game_finished
+      end
+    elsif player_role == 2
+      players.select_secret_code
+      puts board.secret_code
+    end
+  end
 
   def insert_code_peg(user_choice)
     board.decode_holes[current_turn][current_position] = Board::CODE_PEGS[user_choice]
