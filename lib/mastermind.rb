@@ -83,7 +83,7 @@ class Mastermind
     4.times do |n|
       print "#{board.secret_code[n]} "
     end
-    print "\n"
+    puts "\nCan the computer guess it?\n\n"
   end
 
   def insert_code_peg(user_choice)
