@@ -51,24 +51,25 @@ class Mastermind
                 :secret_code_counter, :correct_guess_counter, :board, :players
 
   def select_player_role(player_role)
-    return unless player_role == 1
-
-    board.generate_secret_code
-    while current_turn < 12
-      user_choice = players.choose_peg
-      insert_code_peg(user_choice)
-      break if game_finished
+    if player_role == 1
+      board.generate_secret_code
+      while current_turn < 12
+        user_choice = players.choose_peg
+        insert_code_peg(user_choice)
+        break if game_finished
+      end
+    elsif player_role == 2
+      4.times do
+        user_choice = players.choose_peg
+        insert_secret_peg(user_choice)
+      end
+      while current_turn < 12
+        user_choice1 = players.choose_peg
+        insert_code_peg(user_choice1)
+        break if game_finished
+      end
     end
-    # elsif player_role == 2
-    #   4.times do
-    #     user_choice = players.choose_peg
-    #     insert_secret_peg(user_choice)
-    #   end
-    #   while current_turn < 12
-    #     user_choice1 = players.choose_peg
-    #     insert_code_peg(user_choice1)
-    #     break if game_finished
-    #   end
+    #   last stop
   end
 
   def insert_secret_peg(user_choice)
