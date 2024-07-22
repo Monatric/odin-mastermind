@@ -8,8 +8,9 @@ require_relative "board"
 class Mastermind
   include Display
 
-  def initialize(player_1_class)
-    @players = player_1_class.new(self)
+  def initialize(human_player, role)
+    @players = human_player.new(self)
+    @human_role = role
     @board = Board.new
     @secret_code_counter = {}
     @correct_guess_counter = {}
@@ -18,10 +19,10 @@ class Mastermind
     @game_finished = false
   end
 
-  def start_game(player_role)
+  def start_game
     # puts "Welcome to Mastermind! The computer has already selected the secret colors. Try your best to guess!"
     board.set_up_board
-    select_player_role(player_role)
+    select_player_role
     display_board(board.decode_holes, board.key_holes)
     # while current_turn < 12
     #   user_choice = players.choose_peg
@@ -30,7 +31,7 @@ class Mastermind
     # end
   end
 
-  attr_accessor :current_position
+  attr_accessor :current_position, :human_role
 
   def check_winner
     if current_turn == 11 && code_guessed? == false
@@ -50,15 +51,15 @@ class Mastermind
   attr_accessor :current_turn, :game_finished,
                 :secret_code_counter, :correct_guess_counter, :board, :players
 
-  def select_player_role(player_role)
-    if player_role == 1
+  def select_player_role
+    if human_role == 1
       board.generate_secret_code
       while current_turn < 12
         user_choice = players.choose_peg
         insert_code_peg(user_choice)
         break if game_finished
       end
-    elsif player_role == 2
+    elsif human_role == 2
       4.times do
         user_choice = players.choose_peg
         insert_secret_peg(user_choice)
@@ -90,7 +91,7 @@ class Mastermind
     board.decode_holes[current_turn][current_position] = Board::CODE_PEGS[user_choice]
     self.current_position += 1
     display_board(board.decode_holes, board.key_holes)
-    players.confirm_choice if current_position == 4
+    players.confirm_choice if current_position == 4 && human_role == 1
   end
 
   def code_guessed?

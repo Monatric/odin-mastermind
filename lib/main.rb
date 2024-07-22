@@ -13,4 +13,4 @@ def select_role
   user_choice
 end
 
-Mastermind.new(HumanPlayer).start_game(select_role)
+Mastermind.new(HumanPlayer, select_role).start_game
