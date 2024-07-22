@@ -39,6 +39,13 @@ class Mastermind
     end
   end
 
+  def insert_code_peg(user_choice)
+    board.decode_holes[current_turn][current_position] = Board::CODE_PEGS[user_choice]
+    self.current_position += 1
+    display_board(board.decode_holes, board.key_holes)
+    players[0].confirm_choice if current_position == 4 && human_role == 1
+  end
+
   private
 
   attr_accessor :current_turn, :game_finished,
@@ -57,13 +64,8 @@ class Mastermind
         user_choice = players[0].choose_peg
         insert_secret_peg(user_choice)
       end
-      # while current_turn < 12
-      #   user_choice1 = players.choose_peg
-      #   insert_code_peg(user_choice1)
-      #   break if game_finished
-      # end
+      players[1].guess_code
     end
-    #   last stop
   end
 
   def insert_secret_peg(user_choice)
@@ -78,13 +80,6 @@ class Mastermind
       print "#{board.secret_code[n]} "
     end
     puts "\nCan the computer guess it?\n\n"
-  end
-
-  def insert_code_peg(user_choice)
-    board.decode_holes[current_turn][current_position] = Board::CODE_PEGS[user_choice]
-    self.current_position += 1
-    display_board(board.decode_holes, board.key_holes)
-    players[0].confirm_choice if current_position == 4 && human_role == 1
   end
 
   def code_guessed?

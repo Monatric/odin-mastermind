@@ -12,4 +12,14 @@ class ComputerPlayer
     @computer_guess = [0, 0, 1, 1]
     # puts @solution_list
   end
+
+  attr_reader :computer_guess
+
+  def guess_code
+    computer_guess.each do |element|
+      @game.insert_code_peg(element)
+    end
+    @game.current_position = 0
+    @game.check_winner
+  end
 end
