@@ -1,5 +1,6 @@
 require_relative "mastermind"
 require_relative "human_player"
+require_relative "computer_player"
 
 def select_role
   puts "Welcome to Mastermind! Enter a number to select your role."
@@ -13,4 +14,4 @@ def select_role
   user_choice
 end
 
-Mastermind.new(HumanPlayer, select_role).start_game
+Mastermind.new(HumanPlayer, ComputerPlayer, select_role).start_game

@@ -8,8 +8,8 @@ require_relative "board"
 class Mastermind
   include Display
 
-  def initialize(human_player, role)
-    @players = human_player.new(self)
+  def initialize(human_player, computer_player, role)
+    @players = [human_player.new(self), computer_player.new(self)]
     @human_role = role
     @board = Board.new
     @secret_code_counter = {}
@@ -20,15 +20,9 @@ class Mastermind
   end
 
   def start_game
-    # puts "Welcome to Mastermind! The computer has already selected the secret colors. Try your best to guess!"
     board.set_up_board
     select_player_role
     display_board(board.decode_holes, board.key_holes)
-    # while current_turn < 12
-    #   user_choice = players.choose_peg
-    #   insert_code_peg(user_choice)
-    #   break if game_finished
-    # end
   end
 
   attr_accessor :current_position, :human_role
@@ -42,7 +36,6 @@ class Mastermind
       self.game_finished = true
     else
       give_feedback
-      # players.choose_peg
     end
   end
 
@@ -55,20 +48,20 @@ class Mastermind
     if human_role == 1
       board.generate_secret_code
       while current_turn < 12
-        user_choice = players.choose_peg
+        user_choice = players[0].choose_peg
         insert_code_peg(user_choice)
         break if game_finished
       end
     elsif human_role == 2
       4.times do
-        user_choice = players.choose_peg
+        user_choice = players[0].choose_peg
         insert_secret_peg(user_choice)
       end
-      while current_turn < 12
-        user_choice1 = players.choose_peg
-        insert_code_peg(user_choice1)
-        break if game_finished
-      end
+      # while current_turn < 12
+      #   user_choice1 = players.choose_peg
+      #   insert_code_peg(user_choice1)
+      #   break if game_finished
+      # end
     end
     #   last stop
   end
@@ -91,7 +84,7 @@ class Mastermind
     board.decode_holes[current_turn][current_position] = Board::CODE_PEGS[user_choice]
     self.current_position += 1
     display_board(board.decode_holes, board.key_holes)
-    players.confirm_choice if current_position == 4 && human_role == 1
+    players[0].confirm_choice if current_position == 4 && human_role == 1
   end
 
   def code_guessed?
