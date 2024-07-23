@@ -8,12 +8,7 @@ class ComputerPlayer
     @solution_correct_guess_counter = {}
     @computer_guess = [1, 1, 2, 2]
     @temp_secret_code = []
-    # puts @solution_list
   end
-
-  attr_accessor :computer_guess, :solution_code_counter,
-                :solution_correct_guess_counter, :temp_secret_code,
-                :solution_list, :solution_feedback
 
   def turn_on
     (1..6).each do |i|
@@ -25,14 +20,9 @@ class ComputerPlayer
         end
       end
     end
-
-    # solution_list.map! do |element|
-    #   element.to_s.split("").map { |element_2| element_2.to_i }
-    # end
   end
 
   def guess_code
-    # binding.pry
     computer_guess.each do |element|
       @game.insert_code_peg(element)
     end
@@ -45,22 +35,19 @@ class ComputerPlayer
 
   private
 
+  attr_accessor :computer_guess, :solution_code_counter,
+                :solution_correct_guess_counter, :temp_secret_code,
+                :solution_list, :solution_feedback
+
   def compare_game_feedback_to_solution_feedback
-    # select! solution_array |element|
-    # binding.pry
-    #
     new_solution = solution_list.select do |element|
       game_feedback = @game.board.key_holes[@game.current_turn - 1]
-      # binding.pry if element == [6, 5, 2, 1]
       self.temp_secret_code = element
       give_feedback
-      # puts game_feedback
-      # puts solution_feedback
-      test = element if game_feedback == solution_feedback
+      keep_this_element = element if game_feedback == solution_feedback
       self.solution_feedback = %w[o o o o]
-      test
+      keep_this_element
     end
-    # puts "#{new_solution} test"
 
     self.solution_list = new_solution
   end
@@ -79,8 +66,6 @@ class ComputerPlayer
     self.solution_code_counter = temp_secret_code.tally
     give_black_feedback
     give_white_feedback
-    # compare_guess_to_solution
-    # solution_feedback
   end
 
   def count_keys(element)
@@ -93,7 +78,6 @@ class ComputerPlayer
 
   def give_black_feedback
     computer_guess.each_with_index do |element, index|
-      # binding.pry
       next unless temp_secret_code[index] == element
 
       solution_feedback.unshift(Board::KEY_PEGS[0]).pop
@@ -107,7 +91,6 @@ class ComputerPlayer
 
   def give_white_feedback
     computer_guess.each_with_index do |element, index|
-      # binding.pry if @game.current_turn == 2
       next if solution_code_counter.key?(element) == false
 
       next if temp_secret_code[index] == element
