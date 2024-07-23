@@ -70,7 +70,7 @@ class Mastermind
   end
 
   def insert_secret_peg(user_choice)
-    board.secret_code[current_position] = Board::CODE_PEGS[user_choice]
+    board.secret_code[current_position] = Board::CODE_PEGS[user_choice - 1]
     self.current_position += 1
     puts board.secret_code
     return unless current_position == 4
