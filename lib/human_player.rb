@@ -1,7 +1,9 @@
 require_relative "board"
+require_relative "display"
 
 # To initialize the human player
 class HumanPlayer
+  include Display
   def initialize(game)
     @game = game
   end
