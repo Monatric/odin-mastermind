@@ -25,7 +25,7 @@ class Mastermind
     display_board(board.decode_holes, board.key_holes)
   end
 
-  attr_accessor :current_position, :human_role
+  attr_accessor :current_position, :human_role, :secret_code_counter, :board, :current_turn
 
   def check_winner
     if current_turn == 11 && code_guessed? == false
@@ -40,7 +40,7 @@ class Mastermind
   end
 
   def insert_code_peg(user_choice)
-    board.decode_holes[current_turn][current_position] = Board::CODE_PEGS[user_choice]
+    board.decode_holes[current_turn][current_position] = Board::CODE_PEGS[user_choice - 1]
     self.current_position += 1
     display_board(board.decode_holes, board.key_holes)
     players[0].confirm_choice if current_position == 4 && human_role == 1
@@ -48,8 +48,8 @@ class Mastermind
 
   private
 
-  attr_accessor :current_turn, :game_finished,
-                :secret_code_counter, :correct_guess_counter, :board, :players
+  attr_accessor :game_finished,
+                :correct_guess_counter, :players
 
   def select_player_role
     if human_role == 1
@@ -64,7 +64,8 @@ class Mastermind
         user_choice = players[0].choose_peg
         insert_secret_peg(user_choice)
       end
-      players[1].guess_code
+      players[1].turn_on
+      players[1].guess_code while game_finished == false
     end
   end
 

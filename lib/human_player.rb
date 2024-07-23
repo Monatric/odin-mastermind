@@ -14,7 +14,7 @@ class HumanPlayer
       user_choice = gets.chomp
     end
     # insert_code_peg(user_choice.to_i)
-    user_choice.to_i
+    user_choice.to_i - 1
   end
 
   # def select_secret_code
@@ -47,6 +47,6 @@ class HumanPlayer
   end
 
   def valid_choice?(user_choice)
-    user_choice.match?(/[0-5]/)
+    user_choice.match?(/[1-6]/)
   end
 end
