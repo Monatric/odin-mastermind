@@ -4,7 +4,7 @@ require "pry-byebug"
 require_relative "board"
 # ⚫ for key pegs
 
-# mastermind
+# Game mechanics
 class Mastermind
   include Display
 
@@ -28,10 +28,10 @@ class Mastermind
   attr_accessor :current_position, :human_role, :secret_code_counter, :board, :current_turn
 
   def check_winner
-    if current_turn == 11 && code_guessed? == false
+    if (current_turn == 11 && code_guessed? == false) || (code_guessed? == true && human_role == 2)
       puts "Computer has won! Better luck next time."
       self.game_finished = true
-    elsif code_guessed? == true
+    elsif code_guessed? == true && human_role == 1
       puts "Congratulations player!"
       self.game_finished = true
     else
@@ -52,21 +52,26 @@ class Mastermind
                 :correct_guess_counter, :players
 
   def select_player_role
-    if human_role == 1
-      board.generate_secret_code
-      while current_turn < 12
-        user_choice = players[0].choose_peg
-        insert_code_peg(user_choice)
-        break if game_finished
-      end
-    elsif human_role == 2
-      4.times do
-        user_choice = players[0].choose_peg
-        insert_secret_peg(user_choice)
-      end
-      players[1].turn_on
-      players[1].guess_code while game_finished == false
+    code_guesser if human_role == 1
+    code_maker if human_role == 2
+  end
+
+  def code_guesser
+    board.generate_secret_code
+    while current_turn < 12
+      user_choice = players[0].choose_peg
+      insert_code_peg(user_choice)
+      break if game_finished
     end
+  end
+
+  def code_maker
+    4.times do
+      user_choice = players[0].choose_peg
+      insert_secret_peg(user_choice)
+    end
+    players[1].turn_on
+    players[1].guess_code while game_finished == false
   end
 
   def insert_secret_peg(user_choice)
@@ -92,7 +97,6 @@ class Mastermind
     give_black_feedback
     give_white_feedback
     display_board(board.decode_holes, board.key_holes)
-    puts secret_code_counter
 
     self.current_turn += 1
   end
@@ -107,7 +111,6 @@ class Mastermind
 
   def give_black_feedback
     board.decode_holes[current_turn].each_with_index do |decode_element, index|
-      # index element of the secret_code is the same as decode_holes
       next unless board.secret_code[index] == decode_element
 
       board.key_holes[current_turn].unshift(Board::KEY_PEGS[0]).pop
@@ -116,15 +119,11 @@ class Mastermind
   end
 
   def guess_greater_than_secret?(decode_element)
-    # puts "num of sec: #{secret_code_counter[decode_element]}"
-    # puts "num of dec: #{correct_guess_counter[decode_element]}"
-
     secret_code_counter[decode_element] < correct_guess_counter[decode_element]
   end
 
   def give_white_feedback
     board.decode_holes[current_turn].each_with_index do |decode_element, index|
-      # binding.pry
       next if secret_code_counter.key?(decode_element) == false
 
       next if board.secret_code[index] == decode_element
@@ -135,8 +134,6 @@ class Mastermind
 
       board.key_holes[current_turn].unshift(Board::KEY_PEGS[1]).pop
     end
-    # reset the counter every turn
-    # puts correct_guess_counter
     self.correct_guess_counter = {}
   end
 end
