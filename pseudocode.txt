@@ -236,4 +236,87 @@ refactoring:
     methods for choosing a role
 
   add a class called Computer
-    methods for guessing the code
+    initialize(game)
+      a game variable to connect the  computer to mastermind class
+      a solution array from 1111, 1112, ..., 6666
+        push into array 5555 times n+1
+      a solution feedback array [o, o, o, o]
+      a solution_code_counter {}
+      a solution_correct_guess_counter {}
+      a computer_guess [0, 0, 1, 1]
+
+    method for guessing the code
+      do guess with 1122 first
+        insert_code_peg(0), insert_code_peg(0), insert_code_peg(1), insert_code_peg(1)
+          4.times do |n|
+            insert_code_peg(0)
+            if n > 2
+              insert_code_peg(1)
+            end
+          end
+
+          give_feedback
+        return guess
+      
+    method to compare guess to solution
+      #select! solution_array |element|
+        current_feedback = @game.board.key_holes[current_turn]
+        current_feedback == solution_feedback 
+
+    method to give solution feedback
+
+    methos for feedback
+      def give_feedback
+        self.solution_code_counter = solution_array.tally
+        give_black_feedback
+        give_white_feedback
+        compare guess to solution
+        return solution_feedback array
+      end
+
+      def count_keys(element)
+        if solution_correct_guess_counter.key?(element)
+          solution_correct_guess_counter[element] += 1
+        else
+          solution_correct_guess_counter[element] = 1
+        end
+      end
+
+      def give_black_feedback
+        computer_guess.each_with_index do |element, index|
+          next unless solution_array[index] == element
+
+          solution_feedback.unshift(Board::KEY_PEGS[0]).pop
+          count_keys(element)
+        end
+      end
+
+      def guess_greater_than_solution?(element)
+        solution_code_counter[element] < solution_correct_guess_counter[decode_element]
+      end
+
+      def give_white_feedback
+        computer_guess.each_with_index do |element, index|
+          next if @game.secret_code_counter.key?(element) == false
+
+          next if solution_array[index] == element
+
+          count_keys(element)
+
+          next if guess_greater_than_solution?(element)
+
+          solution_feedback.unshift(Board::KEY_PEGS[1]).pop
+        end
+        self.solution_correct_guess_counter = {}
+      end
+        
+    method to reduce solution array
+      select! solution array |element|
+        current_feedback = solution_feedback
+          # to get the feedback on the current guess
+        
+        current_feedback == element.solution_feedback
+    
+  
+  note: refactor player_role into initialize so we can conditionalize insert_code_peg
+      
